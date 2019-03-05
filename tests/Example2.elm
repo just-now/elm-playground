@@ -11,10 +11,8 @@ suite =
     describe "Home Work #2"
     [ test "convert"
           (\_ -> Expect.equal [{name="John", email="john@gmail.com"}]
-               <| convert [{
-                       name="John",
-                       email="john@gmail.com",
-                       phone_number="+3801234567" }])
+               <| convert [{ name="John", email="john@gmail.com",
+                             phone_number="+3801234567" }])
 
     , test "convert02"
           (\_ -> Expect.equal [{ email = "john@gmail.com",
@@ -32,7 +30,12 @@ suite =
         \_ -> Expect.equal bird bird2
     , test "bird3" <|
         \_ -> Expect.equal bird bird3
-
+    , test "catMaybe" <|
+        \_ -> Expect.equal [1,3] <| catMaybes [Just 1, Nothing, Just 3]
+    , test "mapMaybe" <|
+        \_ -> Expect.equal [4,4,3] <|
+              mapMaybes (\x -> if x == Just 3 then x else Just 4)
+                  [Just 1, Nothing, Just 3]
     ]
 
 

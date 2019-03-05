@@ -1,6 +1,7 @@
 module HW2 exposing (..)
 import List exposing (map, filter, filterMap)
 import Maybe exposing (withDefault)
+import Url.Builder exposing(absolute,string,int)
 
 -- Map one structure to another
 convert
@@ -63,36 +64,15 @@ bird3 =
     in
         [ 1, 2, 3 ] |> List.map incr |> List.filter notThree |> List.sum
 
-
--- Implement setPhone
-
-type alias User = { profile : Profile }
-type alias Profile = { address : Address }
-type alias Address = { phone : String }
-
-setPhone : String -> User -> User
-setPhone = Debug.todo ""
-
--- > setPhone "+123456" { profile = { address = { phone = "+654321" } } }
--- { profile = { address = { phone = "+123456" } } }
-
 -- mapMaybes
 mapMaybes : (a -> Maybe b) -> List a -> List b
-mapMaybes = Debug.todo ""
-
--- > mapMaybes (\x -> if x == Just 3 then x else Just 4) [Just 1, Nothing, Just 3]
--- [4,4,3] : List number
+mapMaybes f l = map f l |> filterMap identity
 
 -- catMaybes
-
 catMaybes : List (Maybe a) -> List a
-catMaybes = Debug.todo ""
-
--- > catMaybes [Just 1, Nothing, Just 3]
--- [1,3] : List number
+catMaybes = filterMap identity
 
 -- Use package elm/url and its Url.Builder.absolute to build URL from parameters
-
 buildStatsUrl : Int -> { startDate : Maybe String, numElems : Maybe Int } -> String
 buildStatsUrl itemId ps =
   Debug.todo ""
@@ -107,3 +87,15 @@ buildStatsUrl itemId ps =
 
 -- Temperature converter
 -- Implement "Temperature Converter" from 7GYUs as described in https://eugenkiss.github.io/7guis/tasks
+
+-- Implement setPhone
+
+type alias User = { profile : Profile }
+type alias Profile = { address : Address }
+type alias Address = { phone : String }
+
+setPhone : String -> User -> User
+setPhone = Debug.todo ""
+
+-- > setPhone "+123456" { profile = { address = { phone = "+654321" } } }
+-- { profile = { address = { phone = "+123456" } } }

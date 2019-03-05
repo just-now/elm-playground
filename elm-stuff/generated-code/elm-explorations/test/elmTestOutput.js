@@ -4331,6 +4331,25 @@ var author$project$HW2$bird3 = function () {
 				_List_fromArray(
 					[1, 2, 3]))));
 }();
+var elm$core$List$maybeCons = F3(
+	function (f, mx, xs) {
+		var _n0 = f(mx);
+		if (_n0.$ === 'Just') {
+			var x = _n0.a;
+			return A2(elm$core$List$cons, x, xs);
+		} else {
+			return xs;
+		}
+	});
+var elm$core$List$filterMap = F2(
+	function (f, xs) {
+		return A3(
+			elm$core$List$foldr,
+			elm$core$List$maybeCons(f),
+			_List_Nil,
+			xs);
+	});
+var author$project$HW2$catMaybes = elm$core$List$filterMap(elm$core$Basics$identity);
 var author$project$HW2$convert = elm$core$List$map(
 	function (x) {
 		return {email: x.email, name: x.name};
@@ -4370,6 +4389,13 @@ var author$project$HW2$convert03 = A2(
 				name: A2(elm$core$Maybe$withDefault, '', ne.name)
 			};
 		}));
+var author$project$HW2$mapMaybes = F2(
+	function (f, l) {
+		return A2(
+			elm$core$List$filterMap,
+			elm$core$Basics$identity,
+			A2(elm$core$List$map, f, l));
+	});
 var author$project$Example2$suite = A2(
 	elm_explorations$test$Test$describe,
 	'Home Work #2',
@@ -4457,6 +4483,44 @@ var author$project$Example2$suite = A2(
 			'bird3',
 			function (_n4) {
 				return A2(elm_explorations$test$Expect$equal, author$project$HW2$bird, author$project$HW2$bird3);
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'catMaybe',
+			function (_n5) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					_List_fromArray(
+						[1, 3]),
+					author$project$HW2$catMaybes(
+						_List_fromArray(
+							[
+								elm$core$Maybe$Just(1),
+								elm$core$Maybe$Nothing,
+								elm$core$Maybe$Just(3)
+							])));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'mapMaybe',
+			function (_n6) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					_List_fromArray(
+						[4, 4, 3]),
+					A2(
+						author$project$HW2$mapMaybes,
+						function (x) {
+							return _Utils_eq(
+								x,
+								elm$core$Maybe$Just(3)) ? x : elm$core$Maybe$Just(4);
+						},
+						_List_fromArray(
+							[
+								elm$core$Maybe$Just(1),
+								elm$core$Maybe$Nothing,
+								elm$core$Maybe$Just(3)
+							])));
 			})
 		]));
 var author$project$Test$Reporter$Reporter$ConsoleReport = function (a) {
@@ -7554,7 +7618,7 @@ var elm_explorations$test$Test$concat = function (tests) {
 		}
 	}
 };
-var author$project$Test$Generated$Main2129488509$main = A2(
+var author$project$Test$Generated$Main437300682$main = A2(
 	author$project$Test$Runner$Node$run,
 	{
 		paths: _List_fromArray(
@@ -7562,7 +7626,7 @@ var author$project$Test$Generated$Main2129488509$main = A2(
 		processes: 4,
 		report: author$project$Test$Reporter$Reporter$ConsoleReport(author$project$Console$Text$UseColor),
 		runs: elm$core$Maybe$Nothing,
-		seed: 342240663692228
+		seed: 346492483384546
 	},
 	elm_explorations$test$Test$concat(
 		_List_fromArray(
@@ -7578,10 +7642,10 @@ var author$project$Test$Generated$Main2129488509$main = A2(
 				_List_fromArray(
 					[author$project$Example$suite]))
 			])));
-_Platform_export({'Test':{'Generated':{'Main2129488509':{'init':author$project$Test$Generated$Main2129488509$main(elm$json$Json$Decode$int)(0)}}}});}(this));
+_Platform_export({'Test':{'Generated':{'Main437300682':{'init':author$project$Test$Generated$Main437300682$main(elm$json$Json$Decode$int)(0)}}}});}(this));
 return this.Elm;
 })({});
-var pipeFilename = "/tmp/elm_test-8569.sock";
+var pipeFilename = "/tmp/elm_test-11730.sock";
 // Make sure necessary things are defined.
 if (typeof Elm === "undefined") {
   throw "test runner config error: Elm is not defined. Make sure you provide a file compiled by Elm!";
