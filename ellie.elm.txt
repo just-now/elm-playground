@@ -1,0 +1,42 @@
+import Browser
+import Html exposing (Html, Attribute, div, input, text)
+import Html.Attributes exposing (..)
+import Html.Events exposing (onInput)
+
+main =
+  Browser.sandbox { init = init, update = update, view = view }
+
+type alias Model = { tc : Float, tf : Float }
+
+init : Model
+init = { tc = 0, tf = 0 }
+
+type Msg
+  = Change Int String
+
+f2c f = (f - 32) * (5/9)
+c2f c = c * (9/5) + 32
+
+update : Msg -> Model -> Model
+update msg model =
+  case msg of
+    Change 1 newTC ->
+      { model | tc = (Maybe.withDefault 0 (String.toFloat newTC)), 
+                tf = c2f (Maybe.withDefault 0 (String.toFloat newTC)) }
+    Change 2 newTF ->
+      { model | tf = (Maybe.withDefault 0 (String.toFloat newTF)), 
+                tc = f2c (Maybe.withDefault 0 (String.toFloat newTF)) }
+    Change _ _ ->
+      model
+
+
+view : Model -> Html Msg
+view model =
+  div []
+    [ text "TC: "
+    , input [ value (String.fromFloat model.tc), onInput (Change 1)] []
+    , text "TF: "
+    , input [ value (String.fromFloat model.tf), onInput (Change 2)] []
+    ]
+    
+
