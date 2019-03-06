@@ -72,30 +72,22 @@ mapMaybes f l = map f l |> filterMap identity
 catMaybes : List (Maybe a) -> List a
 catMaybes = filterMap identity
 
--- Use package elm/url and its Url.Builder.absolute to build URL from parameters
-buildStatsUrl : Int -> { startDate : Maybe String, numElems : Maybe Int } -> String
-buildStatsUrl itemId ps =
-  Debug.todo ""
 
--- > buildStatsUrl 12 {startDate=Nothing, numElems=Nothing}
--- https://myapi.com/api/item/12/stats.json
--- > buildStatsUrl 12 {startDate=Just "2019-01-01", numElems=Nothing}
--- https://myapi.com/api/item/12/stats.json?start_date=2019-01-01
--- > buildStatsUrl 12 {startDate=Just "2019-01-01", numElems=Just 10}
--- https://myapi.com/api/item/12/stats.json?start_date=2019-01-01&num_items=10
--- See if using catMaybes would help as number of GET-parameters will grow
-
--- Temperature converter
--- Implement "Temperature Converter" from 7GYUs as described in https://eugenkiss.github.io/7guis/tasks
-
--- Implement setPhone
-
-type alias User = { profile : Profile }
+type alias User    = { profile : Profile }
 type alias Profile = { address : Address }
 type alias Address = { phone : String }
 
 setPhone : String -> User -> User
-setPhone = Debug.todo ""
-
--- > setPhone "+123456" { profile = { address = { phone = "+654321" } } }
--- { profile = { address = { phone = "+123456" } } }
+setPhone phone user =
+  let
+    setNewPhone addr phoneNew =
+      { addr | phone = phoneNew }
+    setAddr profile addr =
+      { profile | address = addr }
+    setProfile user2 profile =
+      { user2 | profile = profile }
+  in
+  phone
+    |> setNewPhone user.profile.address
+    |> setAddr user.profile
+    |> setProfile user
