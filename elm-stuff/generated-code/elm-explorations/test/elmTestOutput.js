@@ -4523,6 +4523,305 @@ var author$project$Example2$suite = A2(
 							])));
 			})
 		]));
+var author$project$HW3$either = F3(
+	function (fa, fb, res) {
+		if (res.$ === 'Ok') {
+			var o = res.a;
+			return fb(o);
+		} else {
+			var e = res.a;
+			return fa(e);
+		}
+	});
+var elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return elm$core$Maybe$Just(x);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
+var author$project$HW3$find = function (f) {
+	return A2(
+		elm$core$Basics$composeL,
+		elm$core$List$head,
+		elm$core$List$filter(f));
+};
+var elm$core$Result$toMaybe = function (result) {
+	if (result.$ === 'Ok') {
+		var v = result.a;
+		return elm$core$Maybe$Just(v);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
+var author$project$HW3$keepOks = function (xss) {
+	return A2(elm$core$List$filterMap, elm$core$Result$toMaybe, xss);
+};
+var author$project$HW3$mapOk = elm$core$Result$map;
+var author$project$HW3$maybeToList = function (x) {
+	if (x.$ === 'Just') {
+		var i = x.a;
+		return _List_fromArray(
+			[i]);
+	} else {
+		return _List_Nil;
+	}
+};
+var author$project$HW3$updateList = F3(
+	function (shouldChange, howToChange, xs) {
+		var change = function (v) {
+			var _n0 = shouldChange(v);
+			if (_n0) {
+				return howToChange(v);
+			} else {
+				return elm$core$Maybe$Just(v);
+			}
+		};
+		return A2(elm$core$List$filterMap, change, xs);
+	});
+var elm$core$Tuple$second = function (_n0) {
+	var y = _n0.b;
+	return y;
+};
+var author$project$HW3$updateListKv = F3(
+	function (old, k, f) {
+		return A3(
+			author$project$HW3$updateList,
+			function (key) {
+				return _Utils_eq(k, key.a);
+			},
+			function (kv) {
+				var val = f(kv.b);
+				var key = kv.a;
+				if (val.$ === 'Nothing') {
+					return elm$core$Maybe$Nothing;
+				} else {
+					var v = val.a;
+					return elm$core$Maybe$Just(
+						_Utils_Tuple2(key, v));
+				}
+			},
+			old);
+	});
+var author$project$Example3$suite = A2(
+	elm_explorations$test$Test$describe,
+	'Home Work #3',
+	_List_fromArray(
+		[
+			A2(
+			elm_explorations$test$Test$test,
+			'maybeToList1',
+			function (_n0) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					_List_fromArray(
+						[3]),
+					author$project$HW3$maybeToList(
+						elm$core$Maybe$Just(3)));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'maybeToList2',
+			function (_n1) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					_List_Nil,
+					author$project$HW3$maybeToList(elm$core$Maybe$Nothing));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'updateList1',
+			function (_n2) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					_List_fromArray(
+						[1, 4, 5]),
+					A3(
+						author$project$HW3$updateList,
+						function (x) {
+							return x === 3;
+						},
+						function (v) {
+							return elm$core$Maybe$Just(v + 1);
+						},
+						_List_fromArray(
+							[1, 3, 5])));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'updateList2',
+			function (_n3) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					_List_fromArray(
+						[1, 5]),
+					A3(
+						author$project$HW3$updateList,
+						function (x) {
+							return x === 3;
+						},
+						function (v) {
+							return elm$core$Maybe$Nothing;
+						},
+						_List_fromArray(
+							[1, 3, 5])));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'find1',
+			function (_n4) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					elm$core$Maybe$Just(2),
+					A2(
+						author$project$HW3$find,
+						function (x) {
+							return x === 2;
+						},
+						_List_fromArray(
+							[1, 3, 5, 2])));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'find2',
+			function (_n5) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					elm$core$Maybe$Nothing,
+					A2(
+						author$project$HW3$find,
+						function (x) {
+							return x === 2;
+						},
+						_List_fromArray(
+							[1, 3, 5])));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'updateListKv1',
+			function (_n6) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					_List_fromArray(
+						[
+							_Utils_Tuple2('foo', 2),
+							_Utils_Tuple2('bar', 2)
+						]),
+					A3(
+						author$project$HW3$updateListKv,
+						_List_fromArray(
+							[
+								_Utils_Tuple2('foo', 1),
+								_Utils_Tuple2('bar', 2)
+							]),
+						'foo',
+						function (x) {
+							return elm$core$Maybe$Just(x + 1);
+						}));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'updateListKv2',
+			function (_n7) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					_List_fromArray(
+						[
+							_Utils_Tuple2('bar', 2)
+						]),
+					A3(
+						author$project$HW3$updateListKv,
+						_List_fromArray(
+							[
+								_Utils_Tuple2('foo', 1),
+								_Utils_Tuple2('bar', 2)
+							]),
+						'foo',
+						function (x) {
+							return elm$core$Maybe$Nothing;
+						}));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'keepOks1',
+			function (_n8) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					_List_fromArray(
+						[1, 2]),
+					author$project$HW3$keepOks(
+						_List_fromArray(
+							[
+								elm$core$Result$Ok(1),
+								elm$core$Result$Err('bad'),
+								elm$core$Result$Ok(2)
+							])));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'mapOk1',
+			function (_n9) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					elm$core$Result$Ok(3),
+					A2(
+						author$project$HW3$mapOk,
+						function (x) {
+							return x + 1;
+						},
+						elm$core$Result$Ok(2)));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'mapOk2',
+			function (_n10) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					elm$core$Result$Err('str'),
+					A2(
+						author$project$HW3$mapOk,
+						function (x) {
+							return x + 1;
+						},
+						elm$core$Result$Err('str')));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'either1',
+			function (_n11) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					0,
+					A3(
+						author$project$HW3$either,
+						function (x) {
+							return x + 1;
+						},
+						function (x) {
+							return x - 1;
+						},
+						elm$core$Result$Ok(1)));
+			}),
+			A2(
+			elm_explorations$test$Test$test,
+			'either2',
+			function (_n12) {
+				return A2(
+					elm_explorations$test$Expect$equal,
+					2,
+					A3(
+						author$project$HW3$either,
+						function (x) {
+							return x + 1;
+						},
+						function (x) {
+							return x - 1;
+						},
+						elm$core$Result$Err(1)));
+			})
+		]));
 var author$project$Test$Reporter$Reporter$ConsoleReport = function (a) {
 	return {$: 'ConsoleReport', a: a};
 };
@@ -7618,15 +7917,15 @@ var elm_explorations$test$Test$concat = function (tests) {
 		}
 	}
 };
-var author$project$Test$Generated$Main437300682$main = A2(
+var author$project$Test$Generated$Main3574750935$main = A2(
 	author$project$Test$Runner$Node$run,
 	{
 		paths: _List_fromArray(
-			['/Users/anatoliy/Private/elm/tests/Example.elm', '/Users/anatoliy/Private/elm/tests/Example2.elm']),
+			['/Users/anatoliy/Private/elm/tests/Example.elm', '/Users/anatoliy/Private/elm/tests/Example2.elm', '/Users/anatoliy/Private/elm/tests/Example3.elm']),
 		processes: 4,
 		report: author$project$Test$Reporter$Reporter$ConsoleReport(author$project$Console$Text$UseColor),
 		runs: elm$core$Maybe$Nothing,
-		seed: 346492483384546
+		seed: 305886392060965
 	},
 	elm_explorations$test$Test$concat(
 		_List_fromArray(
@@ -7638,14 +7937,19 @@ var author$project$Test$Generated$Main437300682$main = A2(
 					[author$project$Example2$suite])),
 				A2(
 				elm_explorations$test$Test$describe,
+				'Example3',
+				_List_fromArray(
+					[author$project$Example3$suite])),
+				A2(
+				elm_explorations$test$Test$describe,
 				'Example',
 				_List_fromArray(
 					[author$project$Example$suite]))
 			])));
-_Platform_export({'Test':{'Generated':{'Main437300682':{'init':author$project$Test$Generated$Main437300682$main(elm$json$Json$Decode$int)(0)}}}});}(this));
+_Platform_export({'Test':{'Generated':{'Main3574750935':{'init':author$project$Test$Generated$Main3574750935$main(elm$json$Json$Decode$int)(0)}}}});}(this));
 return this.Elm;
 })({});
-var pipeFilename = "/tmp/elm_test-11730.sock";
+var pipeFilename = "/tmp/elm_test-4242.sock";
 // Make sure necessary things are defined.
 if (typeof Elm === "undefined") {
   throw "test runner config error: Elm is not defined. Make sure you provide a file compiled by Elm!";
